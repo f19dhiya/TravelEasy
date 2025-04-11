@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - TravelEasy</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoN4BMBq92qV1p2IiqxNqIyX+7fWn3I6U6Rr2F0d6Hh6P7M"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .payment-card {
+      border: none;
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      max-width: 600px; /* Increased max-width for a larger container */
+      width: 100%; /* Allow the container to consume more space */
+      padding: 3rem; /* Increased padding for more spacing inside the card */
+    }
+
+    .payment-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .form-check {
+      margin-bottom: 2rem; /* Increased spacing between form items */
+    }
+
+    .btn-payment {
+      background: linear-gradient(135deg, #28a745, #218838);
+      border: none;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-payment:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(40, 167, 69, 0.5);
+    }
+
+    .btn-back {
+      background: #007bff;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-back:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 123, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-card">
+    <h2 class="text-center mb-4">Select Payment Method</h2>
+    <form action="{{ url_for('payment') }}" method="POST">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" id="upi" value="upi" required>
+        <label class="form-check-label" for="upi">
+          Google Pay / UPI
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" id="credit_card" value="credit_card">
+        <label class="form-check-label" for="credit_card">
+          Credit Card
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" id="debit_card" value="debit_card">
+        <label class="form-check-label" for="debit_card">
+          Debit Card
+        </label>
+      </div>
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-payment">Proceed</button>
+      </div>
+    </form>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('cart') }}" class="btn btn-back">Back to Cart</a>
+    </div>
+  </div>
+</body>
+</html>

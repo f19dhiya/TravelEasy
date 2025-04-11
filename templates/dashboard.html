@@ -72,9 +72,12 @@
 <body>
   <div class="container">
     <!-- User Greeting -->
-    <div class="text-center mb-4">
-      <h1 class="section-title">Welcome to Your Dashboard</h1>
-      <p>Hello, <strong>{{ username }}</strong>! Your email: <strong>{{ email }}</strong></p>
+    <div class="text-center mb-4 d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="section-title">Welcome to Your Dashboard</h1>
+        <p>Hello, <strong>{{ username }}</strong>! Your email: <strong>{{ email }}</strong></p>
+      </div>
+      <a href="{{ url_for('cart') }}" class="btn btn-primary">View Your Cart</a>
     </div>
     <hr class="my-4">
     
@@ -101,51 +104,42 @@
       </div>
     </div>
     <hr class="my-4">
-    
-    <!-- Toggle Button for Booked Packages -->
-    <div class="text-center mb-4">
-      <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#bookedPackagesCollapse" aria-expanded="false" aria-controls="bookedPackagesCollapse">
-        Show Your Booked Packages
-      </button>
-    </div>
-    
-    <!-- Collapsible Booked Packages Section -->
-    <div class="collapse" id="bookedPackagesCollapse">
-      <div class="mb-5">
-        <h2 class="text-center section-title">Your Booked Packages</h2>
-        {% if booked_packages %}
-        <div class="row mt-4">
-          {% for package in booked_packages %}
-          <div class="col-md-6 col-lg-4">
-            <div class="card dashboard-card">
-              <div class="card-body">
-                <h5 class="card-title">{{ package.location }}</h5>
-                <p><strong>Username:</strong> {{ package.username }}</p>
-                <p><strong>Email:</strong> {{ package.email }}</p>
-                <p><strong>Price:</strong> ${{ package.price }}</p>
-                <p><strong>Days:</strong> {{ package.days }}</p>
-                <p><strong>Food Provided:</strong> {{ package.food }}</p>
-              </div>
+
+    <!-- Booking History Section -->
+    <div class="mb-5">
+      <h2 class="text-center section-title">Booking History</h2>
+      {% if booking_history %}
+      <div class="row mt-4">
+        {% for booking in booking_history %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card dashboard-card">
+            <div class="card-body">
+              <h5 class="card-title">{{ booking.location }}</h5>
+              <p><strong>Price:</strong> ${{ booking.price }}</p>
+              <p><strong>Days:</strong> {{ booking.days }}</p>
+              <p><strong>Food Provided:</strong> {{ booking.food }}</p>
+              <p><strong>Booking Date:</strong> {{ booking.booking_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+              <p><strong>Status:</strong> {{ booking.status }}</p>
             </div>
           </div>
-          {% endfor %}
         </div>
-        {% else %}
-        <p class="empty-state">You have not booked any packages yet.</p>
-        {% endif %}
+        {% endfor %}
       </div>
+      {% else %}
+      <p class="text-center text-muted">No bookings found. Book a package now!</p>
+      {% endif %}
     </div>
-    
     <hr class="my-4">
     
     <!-- Logout Section -->
     <div class="text-center">
       <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
     </div>
+
   </div>
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-q2jyX1pJ7bQq3shjq6myiVyx02lH14mr0C06r7V2ou6Lw9P9zz6lpzrWofLwW5mQ"
+          integrity="sha384-q2jyX1pJ7bQq3shjq6myiVyx02lH14mr0C06r7V2ou6LwW9P9zz6lpzrWofLwW5mQ"
           crossorigin="anonymous"></script>
 </body>
 </html>
