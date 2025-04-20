@@ -5,97 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard - TravelEasy</title>
   <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-ENjdO4Dr2bkBIFxQpeoN4BMBq92qV1p2IiqxNqIyX+7fWn3I6U6Rr2F0d6Hh6P7M"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Body Styling */
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #818cf8;
+      --accent-color: #f59e0b;
+      --text-color: #1f2937;
+      --light-bg: #f3f4f6;
+    }
+
     body {
-      background: #f8f9fa; /* Light gray background */
+      background: var(--light-bg);
       min-height: 100vh;
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+
+    .user-greeting {
+      background: white;
+      border-radius: 1rem;
       padding: 2rem;
-      color: #2d3748; /* Dark gray text */
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
-    /* Section Titles */
+
     .section-title {
-      color: #2d3748; /* Dark gray */
+      color: var(--text-color);
       font-weight: 700;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      padding-bottom: 0.5rem;
     }
-    /* Card Styling */
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 3px;
+    }
+
     .dashboard-card {
       border: none;
       border-radius: 1rem;
-      background: #ffffff; /* White background */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-      padding: 18px; /* Add padding */
-      height: 100%; /* Ensure equal height */
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      margin-bottom: 1.5rem;
     }
+
     .dashboard-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
     }
-    /* Button Styling */
+
+    .card-img-top {
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .dashboard-card:hover .card-img-top {
+      transform: scale(1.05);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+
+    .card-text {
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .package-details {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--light-bg);
+      border-radius: 0.5rem;
+    }
+
+    .package-details p {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .package-details i {
+      color: var(--primary-color);
+      width: 20px;
+    }
+
     .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2); /* Accent color */
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       border: none;
-      border-radius: 0.75rem;
-      padding: 0.5rem 1rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-top: auto;
     }
+
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.5);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     }
+
     .btn-danger {
-      border-radius: 0.75rem;
+      background: #ef4444;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
     }
-    /* Remove Custom Grid Override on .row */
-    /* Use Bootstrap's grid system for proper spacing */
-    /* Empty State Styling */
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .cart-btn {
+      background: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .cart-btn:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+
     .empty-state {
-      color: #6c757d; /* Secondary gray */
-      font-size: 1.2rem;
       text-align: center;
-      margin-top: 2rem;
+      padding: 3rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- User Greeting -->
-    <div class="text-center mb-4 d-flex justify-content-between align-items-center">
-      <div>
-        <h1 class="section-title">Welcome to Your Dashboard</h1>
-        <p>Hello, <strong>{{ username }}</strong>! Your email: <strong>{{ email }}</strong></p>
+  <nav class="navbar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <h1 class="h4 mb-0">TravelEasy</h1>
+        <div class="d-flex gap-3">
+          <a href="{{ url_for('cart') }}" class="cart-btn">
+            <i class="fas fa-shopping-cart me-2"></i>View Cart
+          </a>
+          <a href="{{ url_for('logout') }}" class="btn btn-danger">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </a>
+        </div>
       </div>
-      <a href="{{ url_for('cart') }}" class="btn btn-primary">View Your Cart</a>
     </div>
-    <hr class="my-4">
-    
+  </nav>
+
+  <div class="container py-4">
+    <!-- User Greeting -->
+    <div class="user-greeting">
+      <h2 class="h4 mb-3">Welcome back, <span class="text-primary">{{ username }}</span>!</h2>
+      <p class="text-muted mb-0">
+        <i class="fas fa-envelope me-2"></i>{{ email }}
+      </p>
+    </div>
+
     <!-- Tour Packages Section -->
     <div class="mb-5">
       <h2 class="text-center section-title">Available Tour Packages</h2>
-      <div class="row mt-4">
+      <div class="row g-4">
         {% for package in tour_packages %}
-        <div class="col-md-6 col-lg-4">
-          <div class="card dashboard-card">
+        <div class="col-lg-4 col-md-6">
+          <div class="dashboard-card">
+            <img src="{{ package.image_url }}" class="card-img-top" alt="{{ package.location }}" loading="lazy">
             <div class="card-body">
               <h5 class="card-title">{{ package.location }}</h5>
-              <p><strong>Price:</strong> ${{ package.price }}</p>
-              <p><strong>Days:</strong> {{ package.days }}</p>
-              <p><strong>Food Provided:</strong> {{ "Yes" if package.food else "No" }}</p>
-              <form action="{{ url_for('book_package') }}" method="POST">
+              <p class="card-text">{{ package.description }}</p>
+              <div class="package-details">
+                <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> ${{ package.price }}</p>
+                <p><i class="fas fa-calendar-alt"></i> <strong>Duration:</strong> {{ package.days }} days</p>
+                <p><i class="fas fa-utensils"></i> <strong>Food:</strong> {{ "Included" if package.food else "Not included" }}</p>
+              </div>
+              <form action="{{ url_for('book_package') }}" method="POST" class="mt-3">
                 <input type="hidden" name="package_id" value="{{ package.id }}">
-                <button type="submit" class="btn btn-primary w-100">Book Package</button>
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="fas fa-shopping-bag me-2"></i>Book Now
+                </button>
               </form>
             </div>
           </div>
@@ -103,43 +234,40 @@
         {% endfor %}
       </div>
     </div>
-    <hr class="my-4">
 
     <!-- Booking History Section -->
     <div class="mb-5">
       <h2 class="text-center section-title">Booking History</h2>
-      {% if booking_history %}
-      <div class="row mt-4">
-        {% for booking in booking_history %}
-        <div class="col-md-6 col-lg-4">
-          <div class="card dashboard-card">
-            <div class="card-body">
-              <h5 class="card-title">{{ booking.location }}</h5>
-              <p><strong>Price:</strong> ${{ booking.price }}</p>
-              <p><strong>Days:</strong> {{ booking.days }}</p>
-              <p><strong>Food Provided:</strong> {{ booking.food }}</p>
-              <p><strong>Booking Date:</strong> {{ booking.booking_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-              <p><strong>Status:</strong> {{ booking.status }}</p>
-            </div>
+      <div class="booking-history">
+        <h3>Booking History</h3>
+        {% if booking_history %}
+          <div class="list-group">
+            {% for booking in booking_history %}
+              <a href="{{ url_for('view_bill', booking_id=booking.id) }}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ booking.location }}</h5>
+                  <small>{{ booking.booking_date.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <p class="mb-1">
+                  <strong>Price:</strong> ₹{{ booking.price }} | 
+                  <strong>Duration:</strong> {{ booking.days }} days | 
+                  <strong>Food:</strong> {{ booking.food }}
+                </p>
+                <small class="text-{{ 'success' if booking.status == 'Completed' else 'warning' }}">
+                  <i class="fas fa-{{ 'check-circle' if booking.status == 'Completed' else 'clock' }} me-1"></i>
+                  {{ booking.status }}
+                </small>
+              </a>
+            {% endfor %}
           </div>
-        </div>
-        {% endfor %}
+        {% else %}
+          <p class="text-muted">No booking history available.</p>
+        {% endif %}
       </div>
-      {% else %}
-      <p class="text-center text-muted">No bookings found. Book a package now!</p>
-      {% endif %}
     </div>
-    <hr class="my-4">
-    
-    <!-- Logout Section -->
-    <div class="text-center">
-      <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-    </div>
-
   </div>
+
   <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-q2jyX1pJ7bQq3shjq6myiVyx02lH14mr0C06r7V2ou6LwW9P9zz6lpzrWofLwW5mQ"
-          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
