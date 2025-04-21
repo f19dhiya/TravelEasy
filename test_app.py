@@ -80,10 +80,7 @@ class TravelEasyAppTests(unittest.TestCase):
         except Exception as e:
             self.fail(f"An unexpected error occurred during login verification for '{username}': {e}")
 
-
     def test_signup_and_login(self):
-        """Tests signing up a new user and then logging in with those credentials."""
-        # ... (test_signup_and_login remains the same) ...
         print("Running test_signup_and_login...")
         driver = self.driver
         driver.get(self.base_url + "/login") # Start at login page for signup link
@@ -91,7 +88,13 @@ class TravelEasyAppTests(unittest.TestCase):
         # --- Sign Up Phase ---
         print("Navigating to signup page...")
         signup_link = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[normalize-space()='Create Account']")))
-        signup_link.click()
+        try:
+            signup_link.click()
+        except ElementClickInterceptedException:
+            print("Standard click failed for signup link. Trying JS click after scroll...")
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", signup_link)
+            time.sleep(0.5)
+            driver.execute_script("arguments[0].click();", signup_link)
 
         self.wait.until(EC.url_to_be(self.base_url + "/signin"))
         self.assertEqual(driver.current_url, self.base_url + "/signin")
@@ -99,7 +102,7 @@ class TravelEasyAppTests(unittest.TestCase):
 
         # Generate unique credentials for signup
         timestamp = int(time.time())
-        new_username = f"testuser_{timestamp}" # Make username more specific
+        new_username = f"testuser_{timestamp}"
         new_email = f"testuser_{timestamp}@example.com"
         new_password = "testpassword123"
         print(f"Generated credentials: Username='{new_username}', Email='{new_email}'")
@@ -120,13 +123,9 @@ class TravelEasyAppTests(unittest.TestCase):
         # Wait for redirection back to login page after signup
         self.wait.until(EC.url_to_be(self.base_url + "/login"))
         print("Signup successful, redirected to login page.")
-        # --- End Sign Up Phase ---
 
         # --- Login Phase ---
-        # Now, use the _login helper with the newly created credentials
         self._login(new_username, new_password)
-        # --- End Login Phase ---
-
         print("test_signup_and_login PASSED")
 
     def test_add_package_to_cart(self):
@@ -180,7 +179,6 @@ class TravelEasyAppTests(unittest.TestCase):
                  self.fail(f"Both clicks failed for 'View Cart' button. JS Error: {js_e}")
         except Exception as e:
              self.fail(f"Error clicking 'View Cart': {e}")
-
 
         self.wait.until(EC.url_to_be(self.base_url + "/cart"))
         self.assertEqual(driver.current_url, self.base_url + "/cart")
